@@ -5,20 +5,21 @@ import { getNexusResponse } from '../../utils/ResponseEngine'
 import styles from './ResponseBox.styles'
 
 export default function ResponseBox() {
-  const { mode, status, lastInput } = useSelector((state) => state.nexus)
+  const { lastInput } = useSelector((state) => state.nexus)
 
   // 🧠 Calcola la risposta in base all’input
-  const response = useMemo(() => {
-    if (!lastInput || lastInput.trim() === "") return null
-    return getNexusResponse({ mode, input: lastInput, status })
-  }, [lastInput, mode, status])
+  const responseText = useMemo(() => {
+    if (!lastInput?.trim()) return null
+    const { text } = getNexusResponse(lastInput)
+    return text
+  }, [lastInput])
 
-  if (!response) return null
+  if (!responseText) return null
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>🧠 Risposta di Nexus</Text>
-      <Text style={styles.responseText}>{response}</Text>
+      <Text style={styles.responseText}>{responseText}</Text>
     </View>
   )
 }

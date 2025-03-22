@@ -12,11 +12,13 @@ export default function MemoryLog() {
       {memory.length === 0 ? (
         <Text style={styles.empty}>Nessun ricordo memorizzato.</Text>
       ) : (
-        <ScrollView style={{ maxHeight: 150 }}>
+        <ScrollView style={{ maxHeight: 200 }}>
           {memory.map((item, index) => (
-            <Text key={index} style={styles.item}>
-              • {item}
-            </Text>
+            <View key={index} style={styles.itemGroup}>
+              <Text style={styles.item}>• 📝 {item.input}</Text>
+              <Text style={styles.response}>↪️ {item.response}</Text>
+              <Text style={styles.emotion}>😶 Emozione: {item.emotion}</Text>
+            </View>
           ))}
         </ScrollView>
       )}

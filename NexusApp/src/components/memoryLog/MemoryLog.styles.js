@@ -24,4 +24,16 @@ export default StyleSheet.create({
     fontStyle: 'italic',
     color: '#666',
   },
+  itemGroup: {
+    marginBottom: 10,
+  },
+  response: {
+    marginLeft: 10,
+    color: '#0ff',
+  },
+  emotion: {
+    marginLeft: 10,
+    fontStyle: 'italic',
+    color: '#aaa',
+  },  
 })

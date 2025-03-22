@@ -1,34 +1,36 @@
 import React, { useState } from 'react'
-import { View, TextInput, Text, TouchableOpacity } from 'react-native'
+import { View, TextInput, Button } from 'react-native'
 import { useDispatch } from 'react-redux'
-import { setLastInput, addToMemory } from '../../store/nexusSlice'
+import { setLastInput, setStatus, addToMemory } from '../../store/nexusSlice'
+import { getNexusResponse } from '../../utils/ResponseEngine'
 import styles from './InputConsole.styles'
 
 export default function InputConsole() {
   const [text, setText] = useState('')
   const dispatch = useDispatch()
 
-  const handleSubmit = () => {
-    if (text.trim() === '') return
+  const handleSend = () => {
+    if (!text.trim()) return
+
+    const { text: responseText, detectedStatus } = getNexusResponse(text)
+
     dispatch(setLastInput(text))
-    dispatch(addToMemory(text))
+    dispatch(setStatus(detectedStatus))
+    dispatch(addToMemory({ input: text, response: responseText, emotion: detectedStatus }))
+
     setText('')
   }
 
   return (
     <View style={styles.container}>
       <TextInput
-        style={styles.input}
-        placeholder="Scrivi qualcosa a Nexus..."
-        placeholderTextColor="#888"
         value={text}
         onChangeText={setText}
-        onSubmitEditing={handleSubmit}
-        returnKeyType="send"
+        placeholder="Parla con Nexus..."
+        placeholderTextColor="#777"
+        style={styles.input}
       />
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Invia</Text>
-      </TouchableOpacity>
+      <Button title="Invia" onPress={handleSend} color="#0ff" />
     </View>
   )
 }
