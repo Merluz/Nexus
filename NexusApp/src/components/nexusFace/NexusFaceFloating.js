@@ -1,73 +1,109 @@
-import React from 'react'
-import { View } from 'react-native'
+import React, { useEffect, useRef } from 'react'
+import { View, Animated } from 'react-native'
 import { useSelector } from 'react-redux'
 import styles from './NexusFaceFloating.styles'
+import useIdle from '../../hooks/useIdle'
 
-// 🤖 Mappa personalizzata di stato → stili
-const emotionStyles = {
-  calmo: {
-    eyeSize: 20,
-    browRotation: '0deg',
-    mouthWidth: 40,
-    color: '#0ff',
-  },
-  carico: {
-    eyeSize: 24,
-    browRotation: '-15deg',
-    mouthWidth: 50,
-    color: '#00ff88',
-  },
-  stanco: {
-    eyeSize: 16,
-    browRotation: '15deg',
-    mouthWidth: 20,
-    color: '#ffaa00',
-  },
-  ansioso: {
-    eyeSize: 14,
-    browRotation: '25deg',
-    mouthWidth: 10,
-    color: '#ff4444',
-  },
-  spento: {
-    eyeSize: 12,
-    browRotation: '0deg',
-    mouthWidth: 0,
-    color: '#666666',
-  },
-}
+import { emotionConfig } from '../../animation/emotionConfig'
+import { createIdleEyeAnimation } from '../../animation/eyeAnimations'
+import { createIdleMouthAnimation } from '../../animation/mouthAnimations'
+import { createIdleBrowAnimation } from '../../animation/browAnimations'
+
+
+
+
 
 export default function NexusFaceFloating() {
   const { status } = useSelector((state) => state.nexus)
-  const emotion = emotionStyles[status] || emotionStyles['calmo']
+  const emotion = emotionConfig[status] || emotionConfig['calmo']
+  const isIdle = useIdle(2000) // tempo di inattività in ms
+
+  // idle e aniimation
+  const eyeAnim = useRef(new Animated.ValueXY({ x: 0, y: 0 }))
+  const scaleY = useRef(new Animated.Value(1))
+  const mouthScaleX = useRef(new Animated.Value(1))
+  const mouthTranslateY = useRef(new Animated.Value(0))
+  const animator = useRef(null)
+  const mouthAnimator = useRef(null) 
+  const leftBrowRotation = useRef(new Animated.Value(0)).current
+  const rightBrowRotation = useRef(new Animated.Value(0)).current
+  const browAnimator = useRef(null)
+
+  
+
+  
+  mouthAnimator.current = createIdleMouthAnimation(
+    mouthScaleX.current,
+    mouthTranslateY.current,
+    status
+  )
+  
+
+
+  useEffect(() => {
+    const eye = createIdleEyeAnimation(status, eyeAnim.current, scaleY.current)
+    const mouth = createIdleMouthAnimation(mouthScaleX.current, mouthTranslateY.current, status)
+    const brows = createIdleBrowAnimation(leftBrowRotation, rightBrowRotation, status)
+    
+    animator.current = eye
+    mouthAnimator.current = mouth
+    browAnimator.current = brows
+    
+    if (isIdle) {
+      animator.current.start()
+      mouthAnimator.current.start()
+      browAnimator.current.start()
+    } else {
+      animator.current.stop()
+      mouthAnimator.current.stop()
+      browAnimator.current.stop()
+    }
+    
+  
+    return () => {
+      animator.current?.stop()
+      mouthAnimator.current?.stop()
+      browAnimator.current?.stop()
+    }
+    
+  }, [isIdle, status])
+  
 
   return (
     <View style={styles.faceContainer}>
       {/* 👁️ Sopracciglia */}
+      {/* 😤 Sopracciglia animate */}
       <View style={styles.browRow}>
-        <View
+        <Animated.View
           style={[
             styles.brow,
             {
-              transform: [{ rotateZ: emotion.browRotation }],
+              transform: [{ rotateZ: leftBrowRotation.interpolate({
+                inputRange: [-180, 180],
+                outputRange: ['-180deg', '180deg']
+              }) }],
               backgroundColor: emotion.color,
             },
           ]}
         />
-        <View
+        <Animated.View
           style={[
             styles.brow,
             {
-              transform: [{ rotateZ: `-${emotion.browRotation}` }],
+              transform: [{ rotateZ: rightBrowRotation.interpolate({
+                inputRange: [-180, 180],
+                outputRange: ['-180deg', '180deg']
+              }) }],
               backgroundColor: emotion.color,
             },
           ]}
         />
       </View>
 
+
       {/* 👀 Occhi */}
       <View style={styles.eyeRow}>
-        <View
+        <Animated.View
           style={[
             styles.eye,
             {
@@ -75,10 +111,15 @@ export default function NexusFaceFloating() {
               height: emotion.eyeSize,
               borderRadius: emotion.eyeSize / 2,
               backgroundColor: emotion.color,
+              transform: [
+                { translateX: eyeAnim.current.x },
+                { translateY: eyeAnim.current.y },
+                { scaleY: scaleY.current },
+              ],
             },
           ]}
         />
-        <View
+        <Animated.View
           style={[
             styles.eye,
             {
@@ -86,6 +127,11 @@ export default function NexusFaceFloating() {
               height: emotion.eyeSize,
               borderRadius: emotion.eyeSize / 2,
               backgroundColor: emotion.color,
+              transform: [
+                { translateX: eyeAnim.current.x },
+                { translateY: eyeAnim.current.y },
+                { scaleY: scaleY.current },
+              ],
             },
           ]}
         />
@@ -93,16 +139,22 @@ export default function NexusFaceFloating() {
 
       {/* 👄 Bocca */}
       {emotion.mouthWidth > 0 && (
-        <View
+        <Animated.View
           style={[
             styles.mouth,
             {
               width: emotion.mouthWidth,
               backgroundColor: emotion.color,
+              transform: [
+                { scaleX: mouthScaleX.current },
+                { translateY: mouthTranslateY.current },
+              ],
             },
           ]}
         />
       )}
+
+
     </View>
   )
 }
