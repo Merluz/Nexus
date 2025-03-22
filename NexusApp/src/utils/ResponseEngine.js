@@ -1,28 +1,16 @@
-// 📍 src/engine/ResponseEngine.js
+// 📍 utils/ResponseEngine.js
 
-import { parseEmotionFromText } from './emotionParser'
+import { detectEmotion } from '../modules/emotion'
+import { detectIntention } from '../modules/intention'
+import { buildResponse } from '../modules/response'
 
-/**
- * 🔁 Analizza il testo e restituisce:
- * - una risposta testuale (simulata ora)
- * - lo stato emotivo dedotto
- */
-export function getNexusResponse(inputText) {
-  const safeInput = typeof inputText === 'string' ? inputText : ''
-  const detectedStatus = parseEmotionFromText(safeInput)
+export function getNexusResponse(input, currentMode, currentStatus, memory = []) {
+  const emotion = detectEmotion(input)
+  const intention = detectIntention(input)
+  const response = buildResponse(input, { emotion, intention, currentMode, currentStatus, memory })
 
-  const simulatedResponses = {
-    felice: "Sono felice che tu stia bene! 😄",
-    triste: "Mi dispiace sentirlo... ci sono per te. 💙",
-    arrabbiato: "Respira. Vuoi parlarne? 😤",
-    ansioso: "Calma, passo dopo passo... 🫶",
-    curioso: "Mh interessante... raccontami di più! 👀",
-    spento: "Ci sei ancora? Possiamo fare qualcosa insieme 🔋",
-    neutrale: "Capito. Continua pure. 🧠"
+  return {
+    text: response,
+    detectedStatus: emotion
   }
-
-  const response = simulatedResponses[detectedStatus] || "Interessante... continua pure! 🙂"
-
-  return { text: response, detectedStatus }
 }
-

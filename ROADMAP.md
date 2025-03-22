@@ -18,6 +18,16 @@
 - [x] Implementato `ResponseEngine.js` statico
 - [x] Risposte basate su `mode`, `status`, `keyword spotting`
 - [x] Componente `ResponseBox` per visualizzare la risposta
+- [x] Refactoring in `ResponseEngine.js` con moduli separati: emotion, intention, response
+- [x] Mapping emozioni (keyword-based) in `modules/emotion`
+- [x] Mapping intenzioni in `modules/intention`
+- [x] Costruzione risposte per modalità/intenzione/emozione in `modules/response`
+
+### Backend Laravel per memoria IA
+- [x] Creato backend `nexus-backend` con Laravel
+- [x] Connesso a database MySQL (Cloudways ready)
+- [x] Tabelle `users` e `memories` con migrations pronte
+- [x] Configurazione completata + migrations migrate con successo
 
 ### Schermo Espressioni
 - [x] Creato viso modulare fluttuante (`NexusFaceFloating`)
@@ -42,4 +52,3 @@
 - [ ] Gestione obiettivi/notes rapide
 - [ ] Personalizzazione visuale avanzata
 - [ ] Modalità “robot fisico” per trasposizione su Raspberry Pi
-
