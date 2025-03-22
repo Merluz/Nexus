@@ -1,70 +1,45 @@
-# 📍 Nexus – Roadmap Tecnica
-
-Questa roadmap descrive le fasi di sviluppo previste per il progetto **Nexus**, dalla creazione del prototipo base fino alle evoluzioni future.
+# Nexus – Roadmap di Sviluppo
 
 ---
 
-## 🟢 Fase 1 — Fondamenta (Base operativa)
-
-✅ Integrazione React Native + Redux  
-✅ Struttura iniziale del progetto (`/components`, `/screens`, `/store`, ecc.)  
-✅ Salvataggio dati locale con `AsyncStorage`  
-✅ Setup navigazione con `React Navigation`  
-🔲 Creazione volto base di Nexus (stile non umano, reattivo)  
-🔲 Sistema di risposte statiche con comportamento empatico  
-🔲 Diario semplice con input testuale e classificazione sentimentale  
-🔲 Gestione note rapide e obiettivi in locale  
-🔲 Modalità offline operativa
+## ✅ FASE 1 — Fondamenta
+- [x] Integrazione React Native + Redux Toolkit
+- [x] Architettura modulare (componenti, store, util, styles)
+- [x] `redux-persist` con `AsyncStorage` per storage automatico
+- [x] Navigazione multi-schermata con `react-navigation`
+- [x] Console di input e memoria (InputConsole + MemoryLog)
+- [x] Visualizzazione dello stato mentale (StatusPanel)
+- [x] Sostituito `StatusPanel` con `NexusFaceFloating`
 
 ---
 
-## 🔵 Fase 2 — Coscienza e Stati d’Animo
+## 🧠 FASE 2 — Cuore Empatico (IA + Espressività)
+### IA Step 1
+- [x] Implementato `ResponseEngine.js` statico
+- [x] Risposte basate su `mode`, `status`, `keyword spotting`
+- [x] Componente `ResponseBox` per visualizzare la risposta
 
-🔲 Memoria a breve termine: salvataggio e recall di eventi recenti  
-🔲 Sistema di tagging automatico (parole chiave, emozioni, contesto)  
-🔲 Modalità di risposta (Supporto, Complicità, Silenziosa, ecc.)  
-🔲 Primo motore `ResponseEngine.js` per logica conversazionale  
-🔲 Variazioni visive/espressive del volto in base allo stato attuale  
-🔲 Logging giornaliero automatico (“Giornata salvata”)
+### Schermo Espressioni
+- [x] Creato viso modulare fluttuante (`NexusFaceFloating`)
+- [x] Espressioni legate a `status` e colore/emozione
+- [x] Nessun contenitore: stile TARS, pulito, cyber
 
----
+### IA Step 2 (in corso)
+- [ ] Hook `useIdle()` per animazioni inattività
+- [ ] Occhi che si muovono in idle
+- [ ] Bocca animata (sorrisi, attesa, muta)
+- [ ] Micro-espressioni randomiche
 
-## 🟡 Fase 3 — Evoluzione e Personalizzazione
-
-🔲 Impostazioni utente: stile linguaggio, tono risposte, temi visivi  
-🔲 Personalizzazione aspetto visivo di Nexus  
-🔲 Timeline personale: crescita, blocchi, evoluzioni  
-🔲 Notifiche intelligenti basate su contesto e abitudini  
-🔲 Esportazione/Importazione backup manuale
-
----
-
-## 🔴 Fase 4 — Estensione e Integrazione
-
-🔲 Sistema di plugin interni (estensioni modulari di Nexus)  
-🔲 Supporto input vocale (riconoscimento offline o via plugin)  
-🔲 Sync sicura su cloud personale (opzionale)  
-🔲 Integrazione futura con hardware (es. Raspberry Pi)  
-🔲 Comportamento evolutivo in base all’uso (unlock di pattern, frasi, reazioni)
+### IA Step 3 (futuro)
+- [ ] Generazione dinamica con struttura modulare
+- [ ] Supporto per risposte adattive personalizzate
+- [ ] Eventuale supporto LLM (offline o cloud)
 
 ---
 
-## 🔮 Fase 5 — Espansione Creativa
+## 🧭 Prossime Fasi
+- [ ] Diario testuale con input e classificazione
+- [ ] Gestione obiettivi/notes rapide
+- [ ] Personalizzazione visuale avanzata
+- [ ] Modalità “robot fisico” per trasposizione su Raspberry Pi
 
-🔲 Micro-LLM offline per risposte più dinamiche  
-🔲 Addestramento progressivo con dati locali  
-🔲 Volto animato con reazioni in tempo reale (via Lottie)  
-🔲 Modalità “scudo emotivo”: risposte adattive in momenti di crisi  
-🔲 Dashboard di controllo/monitoraggio via desktop o web
-
----
-
-## 🧱 Stato attuale
-
-**Ultimo aggiornamento**: 22/03/2025  
-**Stato progetto**: ✅ Fase 1 avviata — documentazione in corso  
-**Branch attivo**: `main`
-
----
-
-> Aggiorna regolarmente questo file per tracciare lo stato reale del progetto.
